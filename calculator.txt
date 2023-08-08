@@ -1,0 +1,93 @@
+import pyttsx3 as pyttSx3
+import speech_recognition as sr
+engine = pyttSx3.init('sapi5')
+voices = engine.getProperty('voices')
+engine.setProperty('voice',voices[1].id)
+def speak(StringValue):
+    engine.say(StringValue)
+    engine.runAndWait()
+def takeCommand():
+    print("say")
+    speak("say")
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("listeing.....")
+        r.pause_threshold = 1
+        audio = r.listen(source)
+    try:
+        print("recognized")
+        query = r.recognize_google(audio,language= 'en-in')
+        print(f"your command : {query}\n")
+    except Exception as e:
+        print("say that agin ple")
+        speak("say that again ple")
+        return "None"
+    return query
+def getCommandvalue(StringValue):
+    listofcommands = []
+    listofvalues = []
+    for item in StringValue.split(" "):
+        if item.isnumeric():
+            listofvalues.append(int(item))
+        else:
+            listofcommands.append(item)
+    return listofcommands , listofvalues
+add = ["sum","add","adding","summation","+","addition"]
+sub = ["sub","substraction","-"]
+div = ["/","divide","devided","div"]
+mul = ["multiply","multiplication","*"]
+def Addition(listofvalues):
+    sum1 = 0
+    for i in listofvalues:
+        sum1+= i
+    return sum1
+def Substraction(listofvalues):
+    sub1 = 0
+    for i in listofvalues:
+        sub1-= i
+    return sub1
+def Multipication(listofvalues):
+    mul1 = 1
+    for i in listofvalues:
+        mul1 = mul1*i
+    return mul1
+def division(listofvalues):
+    return listofvalues[0]/listofvalues[1]
+op = 'yes'
+while op == 'yes':
+    Query = takeCommand()
+    listofcommand,listofvalues = getCommandvalue(Query)
+    for command in listofcommand:
+        if command.lower() in add:
+            sum1 = Addition(listofvalues)
+            print(f"Addition of {listofvalues} is {sum1}")
+            speak(f"Addition of {listofvalues} is {sum1}")
+            break
+        elif command.lower() in sub:
+            sub1 = Substraction(listofvalues)
+            print(f"Addition of {listofvalues} is {sub1}")
+            speak(f"Addition of {listofvalues} is {sub1}")
+            break
+        elif command.lower() in mul:
+            mul1 = Multiplication(listofvalues)
+            print(f"Addition of {listofvalues} is {mul1}")
+            speak(f"Addition of {listofvalues} is {mul1}")
+            break
+        elif command.lower() in div:
+            div1 = division(listofvalues)
+            print(f"Addition of {listofvalues} is {div1}")
+            speak(f"Addition of {listofvalues} is {div1}")
+            break
+        else:
+            pass
+    else:
+        print("we cant find any command")
+        spaek("we cant find any command ")
+
+    speak("do want continue : yes or no")
+    print("do want continue:yes or no")
+    op = takecommand().lower()
+
+print("thanks")
+print("do you want continue")
+#op = takecommand().lower()
